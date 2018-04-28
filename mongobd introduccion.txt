@@ -1,0 +1,99 @@
+//INSERTAR UN ELEMENTO A UNA COLECCION 
+    //LA COLECCIÓN ES "estudiante" que se encuentra en la db
+db.estudiante.insertOne({
+	nombre: "Pepe",
+    edad: 23,
+    boleta: 2012630350
+    }
+)
+
+//INSERTAR MUCHOS ELEMENTO A UNA COLECCION 
+db.estudiante.insertMany([
+    {nombre:"Daniel", edad:24, boleta: 2012645678},
+    {nombre:"Roman", edad:25, boleta: 2010645678},
+    {nombre:1234, edad:26, boleta:"abcdefg"}
+])
+
+
+//MOSTRAR LAS COLECCIONES 
+    show collecttions 
+
+//BUSCAR DENTRO DE LA COLECCION 
+    db.coleccion.find()
+    db.coleccion.find().pretty()
+    db.estudiante.find().pretty()
+
+
+//ENCONTRAR DENTRO DE UNA COLECCION 
+    // GREATER THAN : $gt: 
+    db.estudiante.find({edad:{$gt:24}})
+    db.estudiante.find({nombre:"Roman"})
+
+//UPDATE AL PRIMERO QUE ENCUENTRE DE UN DOCUMENTO 
+    try{
+        db.estudiante.updateOne(
+            {"nombre" : "Pepe"},
+            {$set: {"nombre" : "José Ricardo"} }
+        );
+    }catch(e){
+        print(e);
+    }
+
+//UPDATE A MUCHOS 
+    try{
+        db.estudiante.updateMany(
+            {edad :{$gt:24}},
+            {$set: {"entidad" : "CDMX"} }
+        );
+    }catch(e){
+        print(e);
+    }
+
+//REEMPLAZAR, CONSERVA EL ID PERO CAMBIA LOS ATRIBUTOS
+    try{
+        db.estudiante.replaceOne(
+            {edad : 26},
+            {"nombre": 1234, "edad" : 26, "boleta" : "abcdefg"}
+        );
+    }catch(e){
+        print(e);
+    }
+
+//SI QUIEREMOS REEMPLAZAR UNO PERO SI ESTE NO EXISTE, ENTONCES LO CREAMOS.
+    try{
+        db.estudiante.replaceOne(
+            {"edad" : 99},
+            {"nombre": "El Viejon", "edad" : 99, "boleta" : 2016630173},
+            {upsert: true}
+        );
+    }catch(e){
+        print(e);
+    }
+
+//hacer actualizaciones multiples.
+    try{
+        db.estudiante.updateMany(
+            {"edad" : {$gte:26}},
+            {$set:{"edad":15}}
+        );
+    }catch(e){
+        print(e);
+    }    
+
+//deleteONE
+    try{
+        db.estudiante.deleteOne(
+            {"boleta" : "abcdefg"}
+        );
+    }catch(e){
+        print(e);
+    }
+
+//deleteMany
+    try{
+        db.estudiante.deleteMany(
+            {"edad" : {$gte:20}}
+        );
+    }catch(e){
+        print(e);
+    }
